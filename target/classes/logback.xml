@@ -1,0 +1,10 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    </appender>
+    <logger level="warn" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <root level="error">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
