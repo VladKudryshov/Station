@@ -1,1 +1,18 @@
-# Created by .ignore support plugin (hsz.mobi)
+.idea
+target
+Station.iml
+Будет удалено .idea/artifacts/
+Будет удалено .idea/compiler.xml
+Будет удалено .idea/dataSources.local.xml
+Будет удалено .idea/dataSources.xml
+Будет удалено .idea/dataSources/
+Будет удалено .idea/kotlinc.xml
+Будет удалено .idea/libraries/
+Будет удалено .idea/misc.xml
+Будет удалено .idea/modules.xml
+Будет удалено .idea/uiDesigner.xml
+Будет удалено .idea/workspace.xml
+Будет удалено target/generated-sources/
+Будет удалено target/generated-test-sources/
+Будет удалено target/project/WEB-INF/css/
+Будет удалено target/project/WEB-INF/jsp/
