@@ -1,9 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+
+<%@ page contentType="text/html;charset=utf-8" %>
 <!doctype html>
-<html lang="en">
+<html>
 
 <head>
     <title>Dashboard</title>
@@ -17,8 +19,6 @@
     <link rel="stylesheet" href="/assets/vendor/chartist/css/chartist-custom.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
-    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-    <link rel="stylesheet" href="/assets/css/demo.css">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
     <!-- ICONS -->
@@ -32,19 +32,18 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="brand">
-            <a href="index.html"><img src="/assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+            <a href="/"><img src="/assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
         </div>
         <div class="container-fluid">
             <div id="navbar-menu">
                 <ul class="nav navbar-nav navbar-right">
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> ${pageContext.request.userPrincipal.name}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> Hello, ${user.fullName}!</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
                             <li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-                            <form id="logoutForm" method="POST" action="${contextPath}/logout">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <form id="logoutForm" method="POST" action="/logout">
                             </form>
                             <li><a onclick="document.forms['logoutForm'].submit()"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                         </ul>
@@ -55,28 +54,7 @@
     </nav>
     <!-- END NAVBAR -->
     <!-- LEFT SIDEBAR -->
-    <div id="sidebar-nav" class="sidebar">
-        <div class="sidebar-scroll">
-            <nav>
-                <ul class="nav">
-                    <li><a href="/" class="active"><i class="lnr lnr-home"></i> <span>My account</span></a></li>
-
-                    <li>
-                        <a href="#subService" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Services</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subService" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="/service/catalog" class="">Catalog services</a></li>
-                                <li><a href="/service/added" class="">Added sevices</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li><a href="/call" class=""><i class="lnr lnr-phone-handset"></i> <span>Calls</span></a></li>
-                    <li><a href="/payment" class=""><i class="lnr lnr-license"></i> <span>Payments</span></a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    <jsp:include page="users/menu.jsp"/>
     <!-- END LEFT SIDEBAR -->
     <!-- MAIN -->
     <div class="main">
@@ -91,12 +69,11 @@
                                 <div class="profile-info">
                                     <h4 class="heading">Basic Info</h4>
                                     <ul class="list-unstyled list-justify">
-                                        <li>Name <span>${user.username}</span></li>
+                                        <li>Phone <span>${user.username}</span></li>
+                                        <li>Full name <span>${user.fullName}</span></li>
                                         <li>Role <span>${user.role}</span></li>
-                                        <li>Mobile <span>(124) 823409234</span></li>
-                                        <li>Email <span>samuel@mydomain.com</span></li>
                                     </ul>
-                                    <div class="text-center"><a href="#" class="btn btn-primary">Edit Profile</a></div>
+                                    <div class="text-center"><a href="/user/edit" class="btn btn-primary">Edit Profile</a></div>
 
                                 </div>
                             </div>
@@ -124,16 +101,16 @@
                                                 </p>
                                             </li>
                                         </c:if>
-                                        <c:forEach var="payments" items="${listPayments}">
+                                        <c:forEach var="paymentEntities" items="${listPayments}" end="2">
                                             <li>
                                                 <i class="fa fa-plus activity-icon"></i>
-                                                <p> Paid service ${payments.service.title} (<b>Status:</b> ${payments.paid})
-                                                    <span class="timestamp">${payments.paymentDate}</span>
+                                                <p> Paid service ${paymentEntities.contract.service.titleEn} (<b>Status:</b> ${paymentEntities.paid})
+                                                    <span class="timestamp">${paymentEntities.paymentDate}</span>
                                                 </p>
                                             </li>
                                         </c:forEach>
                                     </ul>
-                                    <div class="margin-top-30 text-center"><a href="#" class="btn btn-default">See all payments</a></div>
+                                    <div class="margin-top-30 text-center"><a href="/payment" class="btn btn-default">See all paymentEntities</a></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-bottom-left2">
                                     <div class="table-responsive">
@@ -148,16 +125,25 @@
                                             </thead>
                                             <tbody>
 
-                                            <c:forEach var="contract" items="${listContracts}">
+                                            <c:forEach var="contractEntity" items="${listContracts}">
                                                 <tr>
-                                                    <td><a href="#">${contract.service.title}</a></td>
+                                                    <td><a href="#">${contractEntity.service.titleEn}</a></td>
                                                     <td>
-                                                        <span>${contract.service.cost}</span>
+                                                        <span>${contractEntity.service.cost}</span>
                                                     </td>
                                                     <td>
-                                                        <span>${contract.endDate}</span>
+                                                        <span>${contractEntity.endDate}</span>
                                                     </td>
-                                                    <td><span class="label label-success">ACTIVE</span></td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${contractEntity.payment.paid}">
+                                                                <span class="label label-success">SUCCESS</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-warning">WAIT</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
 

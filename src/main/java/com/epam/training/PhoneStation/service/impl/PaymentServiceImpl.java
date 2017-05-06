@@ -1,12 +1,12 @@
 package com.epam.training.PhoneStation.service.impl;
 
 import com.epam.training.PhoneStation.dao.api.PaymentDao;
-import com.epam.training.PhoneStation.dao.api.ServiceModelDao;
-import com.epam.training.PhoneStation.model.Call;
-import com.epam.training.PhoneStation.model.Payment;
-import com.epam.training.PhoneStation.model.ServiceModel;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.dao.api.UserDao;
+import com.epam.training.PhoneStation.entity.*;
 import com.epam.training.PhoneStation.service.api.PaymentService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,55 +14,76 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 @Service
 @Transactional
 public class PaymentServiceImpl implements PaymentService{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentServiceImpl.class);
+
     @Autowired
     private PaymentDao paymentDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Override
-    public Payment addPayment(User user, Object model) {
-
-        Payment payment = new Payment();
-        payment.setUser(user);
-
-        if(model instanceof ServiceModel) {
-            payment.setService((ServiceModel) model);
-        }else {
-            payment.setCall((Call) model);
-        }
-        payment.setPaid(false);
-
-        return paymentDao.save(payment);
+    @Transactional
+    public PaymentEntity getById(long id) {
+        return paymentDao.getById(id);
     }
 
     @Override
-    public void pay(Payment payment, int cost) {
+    @Transactional
+    public List<PaymentEntity> getAll() {
+        return paymentDao.getAll();
+    }
 
-        int price;
-        if(payment.getService()!= null){
-            ServiceModel serviceModel = payment.getService();
-            price = serviceModel.getCost();
-        }else if(payment.getCall()!= null){
-            Call call = payment.getCall();
-            price = call.getCost();
+    @Override
+    @Transactional
+    public void addPayment(String username, Object model) {
+
+        PaymentEntity paymentEntity = new PaymentEntity();
+        paymentEntity.setUser(userDao.getByLogin(username));
+
+        if(model instanceof ContractEntity) {
+            paymentEntity.setContract((ContractEntity) model);
+        }else {
+            paymentEntity.setCall((CallEntity) model);
+        }
+        paymentEntity.setPaid(false);
+
+        paymentEntity = paymentDao.save(paymentEntity);
+
+        LOGGER.debug("Add payment: {}",paymentEntity);
+    }
+
+    @Override
+    @Transactional
+    public void pay(PaymentEntity paymentEntity) {
+
+        int cost;
+        if(paymentEntity.getContract()!= null){
+            ContractEntity contract = paymentEntity.getContract();
+            ServiceEntity service = contract.getService();
+            cost = service.getCost();
+        }else if(paymentEntity.getCall()!= null){
+            CallEntity callEntity = paymentEntity.getCall();
+            cost = callEntity.getCost();
         }else return;
 
 
         Calendar date = new GregorianCalendar();
         Date dateWithoutTime = new Date(date.getTimeInMillis());
-        payment.setPaymentDate(dateWithoutTime);
+        paymentEntity.setPaymentDate(dateWithoutTime);
 
-        int nowCost = payment.getCost()+cost;
-        payment.setCost(nowCost);
 
-        if(nowCost>=price) {
-            payment.setPaid(true);
-        }
+        paymentEntity.setCost(cost);
+        paymentEntity.setPaid(true);
 
-        System.out.println(payment);
-        paymentDao.update(payment);
+        LOGGER.info("The user {} paid", paymentEntity.getUser().getFullName());
+        paymentDao.update(paymentEntity);
     }
+
 }

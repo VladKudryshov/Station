@@ -1,8 +1,11 @@
 package com.epam.training.PhoneStation.service.impl;
 
-import com.epam.training.PhoneStation.dao.api.ServiceModelDao;
-import com.epam.training.PhoneStation.model.ServiceModel;
+import com.epam.training.PhoneStation.dao.api.ServiceEntityDao;
+import com.epam.training.PhoneStation.entity.ServiceEntity;
 import com.epam.training.PhoneStation.service.api.ServiceModelService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,38 +15,45 @@ import java.util.List;
 @Service
 @Transactional
 public class ServiceModelServiceImpl implements ServiceModelService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceModelServiceImpl.class);
+
     @Autowired
-    private ServiceModelDao serviceModelDao;
+    private ServiceEntityDao serviceEntityDao;
 
     @Override
-    public ServiceModel getById(long id) {
-       return serviceModelDao.getById(id);
-    }
-
-    @Override
-    public ServiceModel getByTitle(String login) {
-        return null;
-    }
-
-    @Override
-    public void update(ServiceModel serviceModel) {
-
-    }
-
-    @Override
-    public void delete(long id) {
-        ServiceModel serviceModel = serviceModelDao.getById(id);
-        serviceModelDao.delete(serviceModel);
-    }
-
-    @Override
-    public List<ServiceModel> getAll() {
-        return serviceModelDao.getAll();
+    @Transactional
+    public ServiceEntity getById(long id) {
+       return serviceEntityDao.getById(id);
     }
 
     @Override
     @Transactional
-    public ServiceModel addService(ServiceModel serviceModel) {
-        return serviceModelDao.save(serviceModel);
+    public List<ServiceEntity> getAll() {
+        return serviceEntityDao.getAll();
     }
+
+    @Override
+    @Transactional
+    public void addService(ServiceEntity serviceEntity) {
+        serviceEntityDao.save(serviceEntity);
+        LOGGER.debug("Add service = {}", serviceEntity);
+    }
+
+    @Override
+    @Transactional
+    public void update(ServiceEntity serviceEntity) {
+        LOGGER.info("Service {} update", serviceEntity.getTitleEn());
+        serviceEntityDao.update(serviceEntity);
+    }
+
+    @Override
+    @Transactional
+    public void delete(long id) {
+        ServiceEntity serviceEntity = serviceEntityDao.getById(id);
+        if(serviceEntity!=null){
+            LOGGER.info("Delete service id = {}", serviceEntity.getId());
+            serviceEntityDao.delete(serviceEntity);
+        }
+    }
+
 }

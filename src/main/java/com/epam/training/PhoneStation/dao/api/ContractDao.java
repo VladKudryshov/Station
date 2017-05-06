@@ -1,6 +1,7 @@
 package com.epam.training.PhoneStation.dao.api;
 
-import com.epam.training.PhoneStation.model.Contract;
+import com.epam.training.PhoneStation.entity.ContractEntity;
 
-public interface ContractDao extends AbstractDao<Contract> {
+public interface ContractDao extends AbstractDao<ContractEntity> {
+
 }

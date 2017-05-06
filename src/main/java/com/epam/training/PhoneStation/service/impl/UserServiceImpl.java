@@ -1,23 +1,27 @@
 package com.epam.training.PhoneStation.service.impl;
 
 import com.epam.training.PhoneStation.dao.api.UserDao;
-import com.epam.training.PhoneStation.model.Contract;
-import com.epam.training.PhoneStation.model.Payment;
-import com.epam.training.PhoneStation.model.Role;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.*;
 import com.epam.training.PhoneStation.service.api.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
 @Transactional
 public class UserServiceImpl  implements UserService{
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserDao userDao;
 
@@ -25,86 +29,114 @@ public class UserServiceImpl  implements UserService{
 
     @Override
     @Transactional
-    public User addUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userDao.save(user);
-    }
-
-    @Override
-    @Transactional
-    public User getByLogin(String login) {
+    public UserEntity getByLogin(String login) {
         return userDao.getByLogin(login);
     }
 
     @Override
     @Transactional
-    public User getById(long id) {
+    public UserEntity getById(long id) {
         return userDao.getById(id);
     }
 
     @Override
     @Transactional
-    public void update(User user) {
-        userDao.update(user);
-    }
-
-    @Override
-    @Transactional
-    public void delete(long id) {
-        User user = userDao.getById(id);
-        userDao.delete(user);
-    }
-
-    @Override
-    @Transactional
-    public List<User> getAllUser() {
+    public List<UserEntity> getAllUser() {
         return userDao.getAll();
     }
 
     @Override
-    public List<User> getBlockedUser() {
-       return userDao.getBlockedUser();
+    @Transactional
+    public List<UserEntity> getBlockedUsers() {
+        return userDao.getBlockedUser();
     }
 
+    @Transactional
     @Override
-    public void blockOrUnblock(User user, Date nowDate) {
+    public List<UserEntity> getNotPaidUser() {
+        Calendar calendar = new GregorianCalendar();
+        Date date = new Date(calendar.getTimeInMillis());
+        long nowDate = date.getTime();
 
-        List<Payment> payments = user.getPayments();
-        List<Contract> contracts = user.getContracts();
-        int indexService = 0;
-        boolean flagBlock = false;
+        List<UserEntity> userForBlock = new ArrayList<>();
+        List<UserEntity> users = userDao.getAll();
 
-        for (Payment payment : payments) {
-            if(payment.getService()!=null){
-                for (int i = indexService; i<contracts.size(); i++){
-                    if(contracts.get(i).getService().getId() == payment.getService().getId()){
-                        indexService = i;
-                        break;
-                    }
-                }
-                Date dateContract = contracts.get(indexService).getEndDate();
+        for (UserEntity user : users) {
 
-                if(nowDate.getTime()>=dateContract.getTime() && !payment.isPaid()){
-                    flagBlock = true;
+            if(user.getRole().equals(Role.ROLE_USER_BLOCKED.name()))continue;
+
+            boolean isBlock = false;
+
+            List<ContractEntity> contracts = user.getContractEntities();
+            for (ContractEntity contract : contracts) {
+                PaymentEntity payment = contract.getPayment();
+
+                if (payment.getPaid())continue;
+
+                Date dateContract = contract.getEndDate();
+                long endDateContract = dateContract.getTime();
+
+                if(nowDate>endDateContract ){
+                    userForBlock.add(user);
+                    isBlock = true;
                     break;
                 }
             }
 
-            else{
-                if(!payment.isPaid()){
-                    flagBlock = true;
+            if (isBlock)continue;
+
+            List<CallEntity> calls = user.getCallEntities();
+            for (CallEntity call : calls) {
+                PaymentEntity payment = call.getPayment();
+
+                if (payment.getPaid())continue;
+
+                Date callDate = call.getDate();
+                Calendar tmpCalendar = new GregorianCalendar();
+                tmpCalendar.add(Calendar.DAY_OF_MONTH, -30);
+                Date tmpDate = new Date(tmpCalendar.getTimeInMillis());
+
+                if(callDate.toString().equals(tmpDate.toString())){
+                    userForBlock.add(user);
                     break;
                 }
             }
         }
 
-       /* if(flagBlock){
-            user.setRole(Role.USERBLOCKED);
-        }else {
-            user.setRole(Role.USERACTIVE);
-        }*/
-        userDao.update(user);
+        return userForBlock;
     }
 
+    @Override
+    @Transactional
+    public UserEntity addUser(UserEntity userEntity) {
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+        LOGGER.debug("Add user {}", userEntity);
+
+        return userDao.save(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public void update(UserEntity userEntity) {
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+        LOGGER.info("Update user {}", userEntity);
+        userDao.update(userEntity);
+    }
+
+    @Override
+    public void changeRole(UserEntity userEntity) {
+        LOGGER.info("For user {} change role {}", userEntity.getId(), userEntity.getRole());
+        userDao.update(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public void delete(long id) {
+        UserEntity userEntity = userDao.getById(id);
+        if(userEntity!=null){
+            LOGGER.info("Delete user {}", userEntity);
+            userDao.delete(userEntity);
+        }
+    }
 
 }

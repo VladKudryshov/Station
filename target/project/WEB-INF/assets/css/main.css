@@ -696,7 +696,6 @@ fieldset[disabled] .btn {
 }
 
 .panel .table > thead > tr > th:last-child{
-  padding-right: 120px;
   text-align: right;
 }
 

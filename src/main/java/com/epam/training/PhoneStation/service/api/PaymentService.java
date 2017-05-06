@@ -1,13 +1,18 @@
 package com.epam.training.PhoneStation.service.api;
 
-import com.epam.training.PhoneStation.model.Payment;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.PaymentEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
+
+import java.util.List;
 
 public interface PaymentService {
 
-    Payment addPayment(User user, Object model);
+    PaymentEntity getById(long id);
 
-    void pay(Payment payment, int cost);
+    List<PaymentEntity> getAll();
 
+    void addPayment(String username, Object model);
+
+    void pay(PaymentEntity paymentEntity);
 
 }

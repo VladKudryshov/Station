@@ -1,6 +1,9 @@
 package com.epam.training.PhoneStation.dao.api;
 
-import com.epam.training.PhoneStation.model.Call;
+import com.epam.training.PhoneStation.entity.CallEntity;
 
-public interface CallDao extends AbstractDao<Call>{
+import java.util.List;
+
+public interface CallDao extends AbstractDao<CallEntity>{
+    List<CallEntity> getCallByUserWithPagination();
 }

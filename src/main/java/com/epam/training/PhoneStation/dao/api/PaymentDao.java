@@ -1,6 +1,12 @@
 package com.epam.training.PhoneStation.dao.api;
 
-import com.epam.training.PhoneStation.model.Payment;
+import com.epam.training.PhoneStation.entity.PaymentEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
 
-public interface PaymentDao extends AbstractDao<Payment>{
+import java.util.List;
+
+public interface PaymentDao extends AbstractDao<PaymentEntity>{
+
+    List<PaymentEntity> getAll();
+
 }

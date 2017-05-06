@@ -1,48 +1,50 @@
 package com.epam.training.PhoneStation.service.impl;
 
-
 import com.epam.training.PhoneStation.dao.api.CallDao;
-import com.epam.training.PhoneStation.dao.api.ServiceModelDao;
 import com.epam.training.PhoneStation.dao.api.UserDao;
-import com.epam.training.PhoneStation.model.Call;
-import com.epam.training.PhoneStation.model.ServiceModel;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.CallEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
 import com.epam.training.PhoneStation.service.api.CallService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 @Service
 @Transactional
 public class CallServiceImpl implements CallService {
 
-    @Autowired
-    private UserDao userDao;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CallServiceImpl.class);
 
     @Autowired
     private CallDao callDao;
 
     @Autowired
-    private ServiceModelDao serviceModelDao;
+    private UserDao userDao;
 
     @Override
     @Transactional
-    public Call addCall(long userId, Time start, Time end) {
-        User user = userDao.getById(userId);
-        ServiceModel serviceModel = serviceModelDao.getById(1);
+    public CallEntity addCall(String username, Time time) {
+        Calendar date = new GregorianCalendar();
 
-        long seconds = (end.getTime()-start.getTime())/1000;
-        Time time =new Time(0,0,(int)seconds);
+        UserEntity user = userDao.getByLogin(username);
 
-        int cost = (int)Math.ceil(seconds/60.0)*serviceModel.getCost();
-
-        Call call = new Call();
-        call.setTime(time);
+        CallEntity call = new CallEntity();
         call.setUser(user);
-        call.setCost(cost);
+        call.setTime(time);
+        call.setDate(new Date(date.getTimeInMillis()));
+        call.setCost(123);
+
+        LOGGER.debug("Add call: {}",call);
 
         return callDao.save(call);
     }
+
 }

@@ -1,0 +1,11 @@
+.lang{
+    position: absolute;
+    float: right;
+    right: 20px;
+    font-size: 28px;
+}
+
+.lang a{
+    color: #fff;
+    text-decoration: none;
+}

@@ -1,15 +1,15 @@
 package com.epam.training.PhoneStation.dao.api;
 
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.UserEntity;
 
 import java.util.List;
 
-public interface UserDao extends AbstractDao<User>{
+public interface UserDao extends AbstractDao<UserEntity>{
 
-    User getByLogin(String login);
+    UserEntity getByLogin(String login);
 
-    List<User> getAll();
+    List<UserEntity> getAll();
 
-    List<User> getBlockedUser();
+    List<UserEntity> getBlockedUser();
 
 }

@@ -1,17 +1,20 @@
 package com.epam.training.PhoneStation.service.impl;
 
 import com.epam.training.PhoneStation.dao.api.ContractDao;
-import com.epam.training.PhoneStation.dao.api.ServiceModelDao;
+import com.epam.training.PhoneStation.dao.api.ServiceEntityDao;
 import com.epam.training.PhoneStation.dao.api.UserDao;
-import com.epam.training.PhoneStation.model.Contract;
-import com.epam.training.PhoneStation.model.ServiceModel;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.ContractEntity;
+import com.epam.training.PhoneStation.entity.ServiceEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
 import com.epam.training.PhoneStation.service.api.ContractService;
+import com.epam.training.PhoneStation.service.api.PaymentService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
@@ -19,6 +22,9 @@ import java.util.GregorianCalendar;
 @Service
 @Transactional
 public class ContractServiceImpl implements ContractService{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContractServiceImpl.class);
+
     @Autowired
     private ContractDao contractDao;
 
@@ -26,29 +32,44 @@ public class ContractServiceImpl implements ContractService{
     private UserDao userDao;
 
     @Autowired
-    private ServiceModelDao serviceModelDao;
+    private ServiceEntityDao serviceEntityDao;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Override
     @Transactional
-    public void addContract(long userId, long serviceId) {
-        User user = userDao.getById(userId);
-        ServiceModel service = serviceModelDao.getById(serviceId);
+    public ContractEntity getContract(long id) {
+        ContractEntity contract = contractDao.getById(id);
+        LOGGER.debug("Get contract: {}", contract );
+        return contract;
+    }
+
+    @Override
+    @Transactional
+    public void addContract(String userName, long serviceId) {
+        UserEntity userEntity = userDao.getByLogin(userName);
+        ServiceEntity service = serviceEntityDao.getById(serviceId);
 
         Calendar date = new GregorianCalendar();
         date.add(Calendar.DAY_OF_YEAR,service.getPeriod());
         Date dateWithoutTime = new Date(date.getTimeInMillis());
 
-        Contract contract = new Contract();
-        contract.setUser(user);
-        contract.setService(service);
-        contract.setEndDate(dateWithoutTime);
+        ContractEntity contractEntity = new ContractEntity();
+        contractEntity.setUser(userEntity);
+        contractEntity.setService(service);
+        contractEntity.setEndDate(dateWithoutTime);
 
-        contractDao.save(contract);
+        LOGGER.debug("Add contract: {}", contractEntity);
+
+        ContractEntity result = contractDao.save(contractEntity);
+        paymentService.addPayment(userName,result);
     }
 
     @Override
     @Transactional
-    public Contract getContract(long id) {
-        return contractDao.getById(id);
+    public void update(ContractEntity contract) {
+        contractDao.update(contract);
+
     }
 }

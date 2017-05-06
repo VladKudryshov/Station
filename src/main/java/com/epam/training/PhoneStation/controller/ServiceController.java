@@ -1,18 +1,23 @@
 package com.epam.training.PhoneStation.controller;
 
 
-import com.epam.training.PhoneStation.model.ServiceModel;
-import com.epam.training.PhoneStation.model.User;
-import com.epam.training.PhoneStation.service.api.SecurityService;
+import com.epam.training.PhoneStation.entity.ContractEntity;
+import com.epam.training.PhoneStation.entity.ServiceEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
+import com.epam.training.PhoneStation.service.api.ContractService;
 import com.epam.training.PhoneStation.service.api.ServiceModelService;
 import com.epam.training.PhoneStation.service.api.UserService;
-import com.epam.training.PhoneStation.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -22,42 +27,107 @@ public class ServiceController {
     private ServiceModelService serviceModelService;
 
     @Autowired
-    private SecurityService securityService;
+    private ContractService contractService;
 
     @Autowired
-    private UserValidator userValidator;
+    private UserService userService;
+
+    private Authentication auth;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView service(ModelAndView model) {
-        List<ServiceModel> services = serviceModelService.getAll();
+        List<ServiceEntity> services = serviceModelService.getAll();
         model.addObject("listService", services);
-        model.setViewName("service");
+        model.setViewName("admin/service");
         return model;
     }
+
+    @RequestMapping(value = "/catalog", method = RequestMethod.GET)
+    public ModelAndView catalog(ModelAndView model) {
+        List<ServiceEntity> services = serviceModelService.getAll();
+        List<ServiceEntity> servicesByUser = new ArrayList<>();
+
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        UserEntity user = userService.getByLogin(userName);
+
+        List<ContractEntity> contractByUser = user.getContractEntities();
+
+        for (ContractEntity contract : contractByUser) {
+            servicesByUser.add(contract.getService());
+        }
+
+        List<ServiceEntity> result = services.stream()
+                .filter(item -> !servicesByUser.contains(item))
+                .collect(Collectors.toList());
+
+        model.addObject("listService", result);
+        model.setViewName("users/catalogService");
+        return model;
+    }
+
+    @RequestMapping(value = "/connected", method = RequestMethod.GET)
+    public ModelAndView addedService(HttpServletRequest request, ModelAndView model) {
+        UserEntity user = userService.getByLogin(request.getUserPrincipal().getName());
+        List<ContractEntity> contractByUser = user.getContractEntities();
+
+        model.addObject("listContract", contractByUser);
+        model.setViewName("users/addedService");
+        return model;
+    }
+
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addService(ModelAndView model) {
-        User user = new User();
-        model.addObject("user", user);
-        model.setViewName("addUser");
+        ServiceEntity service = new ServiceEntity();
+        model.addObject("service", service);
+        model.setViewName("admin/addService");
         return model;
     }
 
-    /*@RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView saveService(@ModelAttribute User user) {
-        if (user.getId() == 0) { // if employee id is 0 then creating the
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ModelAndView saveService(@ModelAttribute ServiceEntity service) {
+        if (service.getId() == 0) { // if employee id is 0 then creating the
             // employee other updating the employee
-            userService.addUser(user);
+            serviceModelService.addService(service);
         } else {
-            userService.update(user);
+            serviceModelService.update(service);
         }
-        return new ModelAndView("redirect:/");
-    }*/
+        return new ModelAndView("redirect:/service");
+    }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public ModelAndView deleteService(@PathVariable(value = "id") Long userId) {
-        serviceModelService.delete(Long.valueOf(userId));
-        return new ModelAndView("redirect:/user/");
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ModelAndView deleteService(@PathVariable(value = "id") Long serviceId) {
+        serviceModelService.delete(serviceId);
+        return new ModelAndView("redirect:/service/");
+    }
+
+    @RequestMapping(value = "{id}/edit", method = RequestMethod.GET)
+    public ModelAndView editUser(@PathVariable(value = "id") Long serviceId) {
+        ServiceEntity service = serviceModelService.getById(serviceId);
+        ModelAndView model = new ModelAndView();
+        model.addObject("serviceEdit", service);
+        model.setViewName("admin/editService");
+
+        return model;
+    }
+
+    @RequestMapping(value = "{serviceId}/activate", method = RequestMethod.GET)
+    public String activateTheService(@PathVariable long serviceId){
+        auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        contractService.addContract(userName,serviceId);
+        return "redirect: /service/catalog";
+    }
+
+    @RequestMapping(value = "{serviceId}/deactivate", method = RequestMethod.GET)
+    public String deactivateTheService(@PathVariable long serviceId){
+        ContractEntity contract = contractService.getContract(serviceId);
+        if(contract.getPayment().getPaid()){
+            contract.setUser(null);
+            contractService.update(contract);
+        }
+        return "redirect: /service/connected";
     }
 
 

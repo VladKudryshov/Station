@@ -1,21 +1,20 @@
 package com.epam.training.PhoneStation.service.api;
 
 
-import com.epam.training.PhoneStation.model.ServiceModel;
-import com.epam.training.PhoneStation.model.User;
+import com.epam.training.PhoneStation.entity.ServiceEntity;
 
 import java.util.List;
 
 public interface ServiceModelService {
-    ServiceModel addService(ServiceModel serviceModel);
 
-    ServiceModel getById(long id);
+    void addService(ServiceEntity serviceEntity);
 
-    ServiceModel getByTitle(String login);
+    ServiceEntity getById(long id);
 
-    void update(ServiceModel serviceModel);
+    void update(ServiceEntity serviceEntity);
 
     void delete(long id);
 
-    List<ServiceModel> getAll();
+    List<ServiceEntity> getAll();
+
 }

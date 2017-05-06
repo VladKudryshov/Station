@@ -1,11 +1,13 @@
 package com.epam.training.PhoneStation.service.api;
 
-import com.epam.training.PhoneStation.model.Contract;
+import com.epam.training.PhoneStation.entity.ContractEntity;
 
 public interface ContractService {
 
-    void addContract(long userId, long serviceId);
+    ContractEntity getContract(long id);
 
-    Contract getContract(long id);
+    void addContract(String userName, long serviceId);
+
+    void update(ContractEntity contract);
 
 }

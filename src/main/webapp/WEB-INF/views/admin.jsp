@@ -1,9 +1,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ page contentType="text/html;charset=utf-8" %>
 <!doctype html>
-<html lang="en">
+<html>
 
 <head>
     <title>Dashboard | Admin</title>
@@ -17,8 +18,6 @@
     <link rel="stylesheet" href="/assets/vendor/chartist/css/chartist-custom.css">
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
-    <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-    <link rel="stylesheet" href="/assets/css/demo.css">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
     <!-- ICONS -->
@@ -32,20 +31,18 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="brand">
-            <a href="index.html"><img src="/assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+            <a href="/"><img src="/assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
         </div>
         <div class="container-fluid">
             <div id="navbar-menu">
                 <ul class="nav navbar-nav navbar-right">
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> ${pageContext.request.userPrincipal.name}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> ${user.fullName}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
                             <li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-                            <form id="logoutForm" method="POST" action="${contextPath}/logout">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            </form>
+                            <form id="logoutForm" method="POST" action="/logout"></form>
                             <li><a onclick="document.forms['logoutForm'].submit()"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                         </ul>
                     </li>
@@ -55,35 +52,7 @@
     </nav>
     <!-- END NAVBAR -->
     <!-- LEFT SIDEBAR -->
-    <div id="sidebar-nav" class="sidebar">
-        <div class="sidebar-scroll">
-            <nav>
-                <ul class="nav">
-                    <li><a href="/" class="active"><i class="lnr lnr-home"></i> <span>My account</span></a></li>
-                    <li>
-                        <a href="#subUsers" data-toggle="collapse" class="collapsed"><i class="lnr lnr-cog"></i> <span>Users app</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subUsers" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="/user" class="">List user</a></li>
-                                <li><a href="/user/add" class="">Add user</a></li>
-                                <li><a href="/user/blocked" class="">Blocked user</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#subServices" data-toggle="collapse" class="collapsed"><i class="lnr lnr-cog"></i> <span>Services</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
-                        <div id="subServices" class="collapse ">
-                            <ul class="nav">
-                                <li><a href="/service" class="">List user</a></li>
-                                <li><a href="/service/add" class="">Add user</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a href="/payments" class=""><i class="lnr lnr-license"></i> <span>Payments users</span></a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    <jsp:include page="admin/menu.jsp"/>
     <!-- END LEFT SIDEBAR -->
     <!-- MAIN -->
     <div class="main">
@@ -96,15 +65,14 @@
                             <!-- PROFILE DETAIL -->
                             <div class="profile-detail">
                                 <div class="profile-info">
-                                    <h4 class="heading">Basic Info</h4>
+                                    <h4 class="heading"><spring:message code="basic.title"/></h4>
                                     <ul class="list-unstyled list-justify">
-                                        <li>Name <span>${user.username}</span></li>
-                                        <li>Role <span>${user.role}</span></li>
-                                        <li>Mobile <span>(124) 823409234</span></li>
-                                        <li>Email <span>samuel@mydomain.com</span></li>
+                                        <li><spring:message code="basic.login"/><span>${user.username}</span></li>
+                                        <li><spring:message code="basic.fullname"/> <span>${user.fullName}</span></li>
+                                        <li><spring:message code="basic.role"/> <span>${user.role}</span></li>
                                     </ul>
                                 </div>
-                                <div class="text-center"><a href="#" class="btn btn-primary">Edit Profile</a></div>
+                                <div class="text-center"><a href="user/${user.id}/edit" class="btn btn-primary"><spring:message code="basic.edit"/></a></div>
                             </div>
                             <!-- END PROFILE DETAIL -->
                         </div>

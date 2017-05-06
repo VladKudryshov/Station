@@ -1,12 +1,14 @@
 package com.epam.training.PhoneStation.service.api;
 
-import com.epam.training.PhoneStation.model.Call;
+import com.epam.training.PhoneStation.entity.CallEntity;
+import com.epam.training.PhoneStation.entity.UserEntity;
+import org.springframework.security.core.userdetails.User;
 
 import java.sql.Time;
+import java.util.List;
 
-public interface CallService {
+public interface    CallService {
 
-    Call addCall(long userId, Time start, Time end);
-
+    CallEntity addCall(String username, Time time);
 
 }

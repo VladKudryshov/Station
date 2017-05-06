@@ -15,7 +15,6 @@
     <context:property-placeholder location="classpath:application.properties" />
 
     <mvc:annotation-driven />
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:resources mapping="/assets/**" location="WEB-INF/assets/"/>
     <!-- View Resolver -->
     <bean
@@ -35,7 +34,7 @@
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.epam.training.PhoneStation.model" />
+        <property name="packagesToScan" value="com.epam.training.PhoneStation.entity" />
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
@@ -54,5 +53,26 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--Message source-->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="locale.locale"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="en_EN"/>
+        <property name="cookieName" value="myLocaleCookie"/>
+        <property name="cookieMaxAge" value="3600"/>
+    </bean>
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="locale"/>
+        </bean>
+    </mvc:interceptors>
+
 
 </beans>
