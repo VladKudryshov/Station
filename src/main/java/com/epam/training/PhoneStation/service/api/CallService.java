@@ -11,4 +11,10 @@ public interface    CallService {
 
     CallEntity addCall(String username, Time time);
 
+    CallEntity gedById(long callId);
+
+    List<CallEntity> getAllByUser(long userId);
+
+    List<CallEntity> getAll();
+
 }

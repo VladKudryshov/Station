@@ -27,7 +27,6 @@ public abstract class AbstractDaoImpl<Type> implements AbstractDao<Type>{
         return (Type) sessionFactory.getCurrentSession().get(parameter, id);
     }
 
-
     @Override
     public Type save(Type model) {
         sessionFactory.getCurrentSession().saveOrUpdate(model);

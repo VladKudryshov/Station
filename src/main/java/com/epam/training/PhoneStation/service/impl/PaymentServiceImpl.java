@@ -41,6 +41,12 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
+    public List<PaymentEntity> getAllByUser(long userId) {
+        UserEntity user = userDao.getById(userId);
+        return user.getPaymentEntities();
+    }
+
+    @Override
     @Transactional
     public void addPayment(String username, Object model) {
 
@@ -57,6 +63,14 @@ public class PaymentServiceImpl implements PaymentService{
         paymentEntity = paymentDao.save(paymentEntity);
 
         LOGGER.debug("Add payment: {}",paymentEntity);
+    }
+
+    @Override
+    public void delete(PaymentEntity payment) {
+
+        LOGGER.info("Delete payment {}", payment);
+        paymentDao.delete(payment);
+
     }
 
     @Override

@@ -20,12 +20,18 @@ public class UserEntityServiceTest {
 
     private UserEntity userEntity = new UserEntity();
 
-    @Test
-    public void testAddUser()
-    {
+
+    @Before
+    public void init(){
         userEntity.setUsername("sash1111112a");
         userEntity.setPassword("123");
         userEntity.setRole(Role.ROLE_USER_ACTIVE);
+    }
+
+    @Test
+    public void testAddUser()
+    {
+
         System.out.println(userEntity);
         userEntity = userService.addUser(userEntity);
 
@@ -51,9 +57,11 @@ public class UserEntityServiceTest {
     @Test
     public void testUpdateUser(){
         UserEntity userEntity1 = userService.getByLogin(userEntity.getUsername());
+        System.out.println(userEntity1);
         userEntity1.setRole(Role.ROLE_ADMIN);
         userService.update(userEntity1);
         UserEntity tmp = userService.getByLogin(userEntity.getUsername());
+
         Assert.assertEquals("ROLE_ADMIN", tmp.getRole());
     }
 

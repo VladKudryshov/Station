@@ -1,4 +1,4 @@
-package com.epam.training.PhoneStation.controller.api;
+package com.epam.training.PhoneStation.controller.json;
 
 import com.epam.training.PhoneStation.entity.ContractEntity;
 import com.epam.training.PhoneStation.service.api.ContractService;
@@ -23,10 +23,10 @@ public class ContractControllerJson {
         return contractService.getById(contractId);
     }
 
-   /* @RequestMapping(value = "/{id}",method = RequestMethod.GET,headers="Accept=application/json")
+    @RequestMapping(value = "user/{id}",method = RequestMethod.GET,headers="Accept=application/json")
     public List<ContractEntity> getAllByUser(@PathVariable(value = "id") Long userId) {
         return contractService.getAllByUser(userId);
-    }*/
+    }
 
     @RequestMapping(method = RequestMethod.GET,headers="Accept=application/json")
     public List<ContractEntity> getAll() {

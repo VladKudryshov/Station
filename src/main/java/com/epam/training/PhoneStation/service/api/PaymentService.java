@@ -11,8 +11,12 @@ public interface PaymentService {
 
     List<PaymentEntity> getAll();
 
+    List<PaymentEntity> getAllByUser(long userId);
+
     void addPayment(String username, Object model);
 
     void pay(PaymentEntity paymentEntity);
+
+    void delete(PaymentEntity payment);
 
 }

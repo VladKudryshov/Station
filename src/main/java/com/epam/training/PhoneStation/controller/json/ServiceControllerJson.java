@@ -1,8 +1,7 @@
-package com.epam.training.PhoneStation.controller.api;
+package com.epam.training.PhoneStation.controller.json;
 
 import com.epam.training.PhoneStation.entity.Error;
 import com.epam.training.PhoneStation.entity.ServiceEntity;
-import com.epam.training.PhoneStation.entity.UserEntity;
 import com.epam.training.PhoneStation.service.api.ServiceModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,21 +57,10 @@ public class ServiceControllerJson {
         }catch (Exception e ){
             Error error = new Error();
             error.setError("Service not deleted, because users use this service");
-            return new ResponseEntity(error,HttpStatus.IM_USED);
+            return new ResponseEntity(error,HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    /*@RequestMapping(value = "/unpaid", method = RequestMethod.GET, headers="Accept=application/json")
-    public List<UserEntity>  unpaidUser() {
-        return userService.getNotPaidUser();
-    }
-
-    @RequestMapping(value = "/blocked",method = RequestMethod.GET, headers="Accept=application/json")
-    public List<UserEntity> blockedUsers() {
-        return userService.getBlockedUsers();
-    }
-*/
 
 }

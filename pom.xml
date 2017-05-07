@@ -31,6 +31,14 @@
     </repositories>
 
     <dependencies>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+        </dependency>
+
         <!-- Jackson JSON Mapper -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -266,6 +274,11 @@
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
             <version>${apachetiles.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.training</groupId>
+            <artifactId>PhoneStation</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>

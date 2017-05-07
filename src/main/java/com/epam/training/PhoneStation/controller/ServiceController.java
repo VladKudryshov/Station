@@ -122,7 +122,7 @@ public class ServiceController {
 
     @RequestMapping(value = "{serviceId}/deactivate", method = RequestMethod.GET)
     public String deactivateTheService(@PathVariable long serviceId){
-        ContractEntity contract = contractService.getContract(serviceId);
+        ContractEntity contract = contractService.getById(serviceId);
         if(contract.getPayment().getPaid()){
             contract.setUser(null);
             contractService.update(contract);

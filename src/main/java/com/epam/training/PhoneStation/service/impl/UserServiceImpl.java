@@ -124,7 +124,7 @@ public class UserServiceImpl  implements UserService{
     }
 
     @Override
-    public void changeRole(UserEntity userEntity) {
+    public void changeRole(UserEntity userEntity)   {
         LOGGER.info("For user {} change role {}", userEntity.getId(), userEntity.getRole());
         userDao.update(userEntity);
     }

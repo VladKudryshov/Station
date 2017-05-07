@@ -2,9 +2,15 @@ package com.epam.training.PhoneStation.service.api;
 
 import com.epam.training.PhoneStation.entity.ContractEntity;
 
+import java.util.List;
+
 public interface ContractService {
 
-    ContractEntity getContract(long id);
+    ContractEntity getById(long id);
+
+    List<ContractEntity> getAllByUser(long userId);
+
+    List<ContractEntity> getAll();
 
     void addContract(String userName, long serviceId);
 

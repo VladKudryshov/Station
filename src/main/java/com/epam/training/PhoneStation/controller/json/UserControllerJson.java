@@ -1,4 +1,4 @@
-package com.epam.training.PhoneStation.controller.api;
+package com.epam.training.PhoneStation.controller.json;
 
 import com.epam.training.PhoneStation.entity.Role;
 import com.epam.training.PhoneStation.entity.UserEntity;
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 

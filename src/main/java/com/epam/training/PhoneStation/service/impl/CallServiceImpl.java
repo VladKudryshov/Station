@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 @Service
 @Transactional
@@ -47,4 +48,22 @@ public class CallServiceImpl implements CallService {
         return callDao.save(call);
     }
 
+    @Override
+    @Transactional
+    public CallEntity gedById(long callId) {
+        return callDao.getById(callId);
+    }
+
+    @Override
+    @Transactional
+    public List<CallEntity> getAllByUser(long userId) {
+        UserEntity user = userDao.getById(userId);
+        return user.getCallEntities();
+    }
+
+    @Override
+    @Transactional
+    public List<CallEntity> getAll() {
+        return callDao.getAll();
+    }
 }

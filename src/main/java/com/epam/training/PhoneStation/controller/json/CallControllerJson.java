@@ -1,4 +1,4 @@
-package com.epam.training.PhoneStation.controller.api;
+package com.epam.training.PhoneStation.controller.json;
 
 import com.epam.training.PhoneStation.entity.CallEntity;
 import com.epam.training.PhoneStation.service.api.CallService;

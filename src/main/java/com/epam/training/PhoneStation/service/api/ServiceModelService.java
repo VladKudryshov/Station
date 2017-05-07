@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ServiceModelService {
 
-    void addService(ServiceEntity serviceEntity);
+    ServiceEntity addService(ServiceEntity serviceEntity);
 
     ServiceEntity getById(long id);
 

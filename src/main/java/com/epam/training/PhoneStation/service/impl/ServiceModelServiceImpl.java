@@ -34,16 +34,17 @@ public class ServiceModelServiceImpl implements ServiceModelService {
 
     @Override
     @Transactional
-    public void addService(ServiceEntity serviceEntity) {
-        serviceEntityDao.save(serviceEntity);
+    public ServiceEntity addService(ServiceEntity serviceEntity) {
+        serviceEntity = serviceEntityDao.save(serviceEntity);
         LOGGER.debug("Add service = {}", serviceEntity);
+        return serviceEntity;
     }
 
     @Override
     @Transactional
     public void update(ServiceEntity serviceEntity) {
-        LOGGER.info("Service {} update", serviceEntity.getTitleEn());
         serviceEntityDao.update(serviceEntity);
+        LOGGER.info("Service {} update", serviceEntity.getTitleEn());
     }
 
     @Override

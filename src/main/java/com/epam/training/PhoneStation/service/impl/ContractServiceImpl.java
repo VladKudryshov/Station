@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 @Service
 @Transactional
@@ -37,12 +38,23 @@ public class ContractServiceImpl implements ContractService{
     @Autowired
     private PaymentService paymentService;
 
-    @Override
     @Transactional
-    public ContractEntity getContract(long id) {
+    @Override
+    public ContractEntity getById(long id) {
         ContractEntity contract = contractDao.getById(id);
         LOGGER.debug("Get contract: {}", contract );
         return contract;
+    }
+
+    @Override
+    public List<ContractEntity> getAllByUser(long userId) {
+        UserEntity user = userDao.getById(userId);
+        return user.getContractEntities();
+    }
+
+    @Override
+    public List<ContractEntity> getAll() {
+        return contractDao.getAll();
     }
 
     @Override
