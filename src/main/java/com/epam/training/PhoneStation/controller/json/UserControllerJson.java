@@ -35,7 +35,7 @@ public class UserControllerJson {
     }
 
 
-   @RequestMapping(value = "/{id}", method = RequestMethod.PUT,headers="Accept=application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT,headers="Accept=application/json")
     public @ResponseBody ResponseEntity  updateUser(@RequestBody UserEntity userEntity,@PathVariable(value = "id") Long userId) {
         UserEntity user = userService.getById(userId);
         if(!userEntity.getUsername().isEmpty()) user.setUsername(userEntity.getUsername());
