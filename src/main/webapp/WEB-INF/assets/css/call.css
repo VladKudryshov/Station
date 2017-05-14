@@ -1,11 +1,7 @@
 .call-view{
-    width: 400px;
+    width: 500px;
     overflow: hidden;
     margin: 0 auto;
     text-align: center;
     padding:20px;
-}
-
-.call-view p{
-    margin: 20px;
 }

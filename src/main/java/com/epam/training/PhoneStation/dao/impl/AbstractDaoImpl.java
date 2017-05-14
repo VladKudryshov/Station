@@ -4,6 +4,7 @@ import com.epam.training.PhoneStation.dao.api.AbstractDao;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -22,6 +23,7 @@ public abstract class AbstractDaoImpl<Type> implements AbstractDao<Type>{
     }
 
     @Override
+    @Cacheable(value = "entity", key = "Type")
     public Type getById(long id) {
 
         return (Type) sessionFactory.getCurrentSession().get(parameter, id);

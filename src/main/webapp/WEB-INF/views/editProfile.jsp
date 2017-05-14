@@ -1,4 +1,4 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -69,7 +69,7 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Edit profile</h3>
+                            <h3 class="panel-title"><spring:message code="page.editUser"/></h3>
                         </div>
                         <div class="panel-body">
                             <div style="margin: 0 auto; width: 500px;">
@@ -77,13 +77,13 @@
                                 <form:form action="/user/add" method="post" modelAttribute="userEdit">
                                     <form:hidden path="id" />
                                     <input id="id" name="id" type="hidden" value="${userEdit.id}"/>
-                                    Login(Phone):
+                                    <spring:message code="form.user.username"/>:
                                     <form:input path="username" type="text" class="form-control" value="${userEdit.username}"/>
-                                    New password:
-                                    <form:input path="password" type="text" class="form-control" />
+                                    <spring:message code="form.user.fullname"/>:
+                                    <form:input path="fullName" type="text" class="form-control" value="${userEdit.fullName}"/>
 
                                     <br>
-                                    <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                                    <button type="submit" class="btn btn-primary btn-block"><spring:message code="form.user.edit"/></button>
                                 </form:form>
 
                             </div>

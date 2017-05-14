@@ -67,17 +67,17 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Unpaid users</h3>
+                            <h3 class="panel-title"><spring:message code="page.unpaidUsers"/></h3>
                         </div>
                         <div class="panel-body">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Username</th>
-                                    <th>Login</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
+                                    <th><spring:message code="table.username"/></th>
+                                    <th><spring:message code="table.fullname"/></th>
+                                    <th><spring:message code="table.role"/></th>
+                                    <th><spring:message code="table.action"/></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -85,12 +85,12 @@
                                     <tr>
                                         <td>${user.id}</td>
                                         <td>${user.username}</td>
-                                        <td>${user.username}</td>
+                                        <td>${user.fullName}</td>
                                         <td>${user.role}</td>
                                         <td>
-                                            <button type="button" class="btn btn-info" onclick="document.location.href='/user/${user.id}/info'"><i class="fa fa-info-circle"></i> Info</button>
-                                            <button type="button" class="btn btn-warning" onclick="document.location.href='/user/${user.id}/changerole'">Block</button>
-                                            <button type="button" class="btn btn-danger" onclick="document.location.href='/user/${user.id}'"><i class="fa fa-trash-o"></i>Delete</button>
+                                            <button type="button" class="btn btn-info" onclick="document.location.href='/user/${user.id}/info'"><i class="fa fa-info-circle"></i> </i> <spring:message code="table.button.info"/></button>
+                                            <button type="button" class="btn btn-warning" onclick="document.location.href='/user/${user.id}/changerole'"></i> <spring:message code="table.button.block"/></button>
+                                            <button type="button" class="btn btn-danger" onclick="document.location.href='/user/${user.id}'"><i class="fa fa-trash-o"></i></i> <spring:message code="table.button.delete"/></button>
                                         </td>
                                     </tr>
 

@@ -70,7 +70,7 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Edit service</h3>
+                            <h3 class="panel-title"><spring:message code="page.editService"/></h3>
                         </div>
                         <div class="panel-body">
 
@@ -78,16 +78,16 @@
 
                                 <form:form action="/service/add" method="post" modelAttribute="serviceEdit">
                                     <form:hidden path="id"/>
-                                    Title(en) service:
+                                    <spring:message code="form.service.titleEn"/>:
                                     <form:input path="titleEn" type="text" class="form-control" />
-                                    Title(ru) service:
+                                    <spring:message code="form.service.titleRu"/>:
                                     <form:input path="titleRu" type="text" class="form-control" />
-                                    Period service:
+                                    <spring:message code="form.service.period"/>:
                                     <form:input path="period" type="number" class="form-control" />
-                                    Cost:
+                                    <spring:message code="form.service.Cost"/>:
                                     <form:input path="cost" type="number" class="form-control" />
                                     <br>
-                                    <button type="submit" class="btn btn-primary btn-block">Edit</button>
+                                    <button type="submit" class="btn btn-primary btn-block"><spring:message code="form.service.edit"/></button>
                                 </form:form>
 
                             </div>

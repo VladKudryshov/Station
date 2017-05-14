@@ -64,9 +64,7 @@ public class UserController {
         } else {
             UserEntity tmp = userService.getById(userEntity.getId());
             tmp.setUsername(userEntity.getUsername());
-            if (!userEntity.getPassword().isEmpty()){
-                tmp.setPassword(userEntity.getPassword());
-            }
+            tmp.setFullName(userEntity.getFullName());
             userService.update(tmp);
         }
 
@@ -84,7 +82,6 @@ public class UserController {
     public ModelAndView editUserById(@PathVariable(value = "id") Long userId) {
         UserEntity userEntity = userService.getById(userId);
         ModelAndView model = new ModelAndView();
-        userEntity.setPassword("");
         model.addObject("userEdit", userEntity);
         model.setViewName("editProfile");
 
@@ -96,7 +93,6 @@ public class UserController {
         String login = request.getUserPrincipal().getName();
         UserEntity userEntity = userService.getByUserName(login);
         ModelAndView model = new ModelAndView();
-        userEntity.setPassword("");
         model.addObject("userEdit", userEntity);
         model.setViewName("editProfile");
 

@@ -67,26 +67,26 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Add user</h3>
+                            <h3 class="panel-title"><spring:message code="page.addUser"/></h3>
                         </div>
                         <div class="panel-body">
 
                             <div style="margin: 0 auto; width: 500px;">
                                 <form:form action="" method="post" modelAttribute="user">
                                     <form:hidden path="id"/>
-                                    Login(Phone):
+                                    <spring:message code="form.user.username"/>:
                                     <form:input path="username" type="text" class="form-control" />
-                                    Full name:
+                                    <spring:message code="form.user.fullname"/>:
                                     <form:input path="fullName" type="text" class="form-control" />
-                                    Password:
+                                    <spring:message code="form.user.password"/>:
                                     <form:input path="password" type="password" class="form-control" />
-                                    Role:
+                                    <spring:message code="form.user.role"/>:
                                     <form:select path="role" class="form-control">
-                                        <form:option value="ROLE_ADMIN">Admin</form:option>
-                                        <form:option value="ROLE_USER_ACTIVE">User</form:option>
+                                        <form:option value="ROLE_ADMIN"><spring:message code="form.user.role.admin"/></form:option>
+                                        <form:option value="ROLE_USER_ACTIVE"><spring:message code="form.user.role.user"/></form:option>
                                     </form:select>
                                     <br>
-                                    <button type="submit" class="btn btn-primary btn-block">Add</button>
+                                    <button type="submit" class="btn btn-primary btn-block"><spring:message code="form.user.add"/></button>
                                 </form:form>
                             </div>
 

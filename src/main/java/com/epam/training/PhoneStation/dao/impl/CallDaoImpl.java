@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class CallDaoImpl extends AbstractDaoImpl<CallEntity> implements CallDao{
 
     @Override
+    @Cacheable(value = "allCall", key = "callDaoImpl")
     public List<CallEntity> getAll() {
         Query query = getSessionFactory().getCurrentSession().createQuery("from CallEntity");
         return query.list();

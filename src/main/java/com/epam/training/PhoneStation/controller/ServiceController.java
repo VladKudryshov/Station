@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -96,9 +97,18 @@ public class ServiceController {
         return new ModelAndView("redirect:/service");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteService(@PathVariable(value = "id") Long serviceId) {
-        serviceModelService.delete(serviceId);
+        try{
+            serviceModelService.delete(serviceId);
+        }catch (Exception e){
+            ModelAndView model = new ModelAndView();
+            List<ServiceEntity> services = serviceModelService.getAll();
+            model.addObject("listService", services);
+            model.addObject("error", "This service is used by users");
+            model.setViewName("admin/service");
+            return model;
+        }
         return new ModelAndView("redirect:/service/");
     }
 
@@ -121,13 +131,21 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "{serviceId}/deactivate", method = RequestMethod.GET)
-    public String deactivateTheService(@PathVariable long serviceId){
+    public ModelAndView deactivateTheService(@PathVariable long serviceId, HttpServletRequest request){
         ContractEntity contract = contractService.getById(serviceId);
         if(contract.getPayment().getPaid()){
             contract.setUser(null);
             contractService.update(contract);
+            return new ModelAndView("redirect:/service/connected");
         }
-        return "redirect:/service/connected";
+        ModelAndView model = new ModelAndView();
+        UserEntity user = userService.getByUserName(request.getUserPrincipal().getName());
+        List<ContractEntity> contractByUser = user.getContractEntities();
+
+        model.addObject("listContract", contractByUser);
+        model.addObject("error", "At first, pay for the service");
+        model.setViewName("users/addedService");
+        return model;
     }
 
 

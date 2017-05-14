@@ -70,7 +70,7 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Call</h3>
+                            <h3 class="panel-title"><spring:message code="link.calls"/></h3>
                         </div>
                         <div class="panel-body">
 
@@ -141,20 +141,20 @@
                                         }
                                 }
                             </script>
-                            <!--Форма для Секундомера-->
+                            <!--Form for stopwatch-->
                             <div class="call-view">
-                                <h1>Call time - <span id="timer">00:00:00</span></h1>
-                                <button type="button" id="start-call" onclick="StartStop()" class="btn btn-primary btn-lg">Call</button>
+                                <h1><spring:message code="page.callTime"/> - <span id="timer">00:00:00</span></h1>
+                                <button type="button" id="start-call" onclick="StartStop()" class="btn btn-primary btn-lg"><spring:message code="table.button.call"/></button>
                             </div>
 
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Cost</th>
-                                        <th>Payment</th>
+                                        <th><spring:message code="table.Date"/></th>
+                                        <th><spring:message code="table.Time"/></th>
+                                        <th><spring:message code="table.cost"/></th>
+                                        <th><spring:message code="table.paid"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -167,10 +167,10 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${call.payment.paid}">
-                                                            <span class="label label-success">SUCCESS</span>
+                                                            <span class="label label-success"><spring:message code="table.paid.success"/></span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span class="label label-warning">WAIT</span>
+                                                            <span class="label label-warning"><spring:message code="table.paid.wait"/></span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>

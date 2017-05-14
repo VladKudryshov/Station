@@ -27,13 +27,14 @@ public class UserDaoImpl  extends AbstractDaoImpl<UserEntity> implements UserDao
     }
 
     @Override
-    @Cacheable(value = "all", key = "user")
+    @Cacheable(value = "allUsers", key = "userDaoImpl")
     public List<UserEntity> getAll() {
         Query query = getSessionFactory().getCurrentSession().createQuery("from UserEntity order by id asc");
         return query.list();
     }
 
     @Override
+    @Cacheable(value = "blockedUsers", key = "userDaoImpl")
     public List<UserEntity> getBlockedUser() {
         Criteria criteria = super.getSessionFactory().getCurrentSession().createCriteria(UserEntity.class);
         criteria.add(Restrictions.eq("role", Role.ROLE_USER_BLOCKED.name()));

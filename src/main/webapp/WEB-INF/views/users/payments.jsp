@@ -64,14 +64,14 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My payments</h3>
+                            <h3 class="panel-title"><spring:message code="page.listPayments"/></h3>
                         </div>
                         <div class="panel-body">
 
                             <div class="custom-tabs-line tabs-line-bottom left-aligned">
                                 <ul class="nav" role="tablist">
-                                    <li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">Call </a></li>
-                                    <li><a href="#tab-bottom-left2" role="tab" data-toggle="tab">Service </a></li>
+                                    <li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab"><spring:message code="table.titleCall"/> </a></li>
+                                    <li><a href="#tab-bottom-left2" role="tab" data-toggle="tab"><spring:message code="table.titleService"/> </a></li>
                                 </ul>
                             </div>
                             <div class="tab-content">
@@ -80,12 +80,12 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Username</th>
-                                            <th>Title service</th>
-                                            <th>Cost</th>
-                                            <th>Payment Date</th>
-                                            <th>Paid</th>
-                                            <th>Action</th>
+                                            <th><spring:message code="table.username"/></th>
+                                            <th><spring:message code="table.titleService"/></th>
+                                            <th><spring:message code="table.cost"/></th>
+                                            <th><spring:message code="table.payDay"/></th>
+                                            <th><spring:message code="table.paid"/></th>
+                                            <th><spring:message code="table.action"/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -94,22 +94,22 @@
                                                 <tr>
                                                     <td>${payment.id}</td>
                                                     <td><a href="/user/${payment.user.id}/info">${payment.user.username}</a></td>
-                                                    <td>Call</td>
+                                                    <td><spring:message code="table.titleCall"/></td>
                                                     <td>${payment.cost}</td>
                                                     <td>${payment.paymentDate}</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${payment.paid}">
-                                                                <span class="label label-success">SUCCESS</span>
+                                                                <span class="label label-success"><spring:message code="table.paid.success"/></span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <span class="label label-warning">WAIT</span>
+                                                                <span class="label label-warning"><spring:message code="table.paid.wait"/></span>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
                                                     <td>
                                                         <c:if test="${!payment.paid}">
-                                                            <button type="button" class="btn btn-info" onclick="document.location.href='/payment/${payment.id}/pay'"><i class="fa fa-info-circle"></i> Pay</button>
+                                                            <button type="button" class="btn btn-info" onclick="document.location.href='/payment/${payment.id}/pay'"><i class="fa fa-info-circle"></i> <spring:message code="table.button.pay"/></button>
                                                         </c:if>
                                                     </td>
                                                 </tr>
@@ -127,12 +127,12 @@
                                             <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Username</th>
-                                                <th>Title service</th>
-                                                <th>Cost</th>
-                                                <th>Payment Date</th>
-                                                <th>Paid</th>
-                                                <th>Action</th>
+                                                <th><spring:message code="table.username"/></th>
+                                                <th><spring:message code="table.titleService"/></th>
+                                                <th><spring:message code="table.cost"/></th>
+                                                <th><spring:message code="table.payDay"/></th>
+                                                <th><spring:message code="table.paid"/></th>
+                                                <th><spring:message code="table.action"/></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -154,16 +154,16 @@
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${payment.paid}">
-                                                                    <span class="label label-success">SUCCESS</span>
+                                                                    <span class="label label-success"><spring:message code="table.paid.success"/></span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <span class="label label-warning">WAIT</span>
+                                                                    <span class="label label-warning"><spring:message code="table.paid.wait"/></span>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </td>
                                                         <td>
                                                             <c:if test="${!payment.paid}">
-                                                                <button type="button" class="btn btn-info" onclick="document.location.href='/payment/${payment.id}/pay'"><i class="fa fa-info-circle"></i> Pay</button>
+                                                                <button type="button" class="btn btn-info" onclick="document.location.href='/payment/${payment.id}/pay'"><i class="fa fa-info-circle"></i> <spring:message code="table.button.pay"/></button>
                                                             </c:if>
                                                         </td>
                                                     </tr>

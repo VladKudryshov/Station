@@ -64,18 +64,18 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Payments user - ${user.username}</h3>
+                            <h3 class="panel-title"><spring:message code="page.listPaymentsUser"/> - ${user.username}</h3>
                         </div>
                         <div class="panel-body">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Username</th>
-                                    <th>Title service</th>
-                                    <th>Cost</th>
-                                    <th>Payment Date</th>
-                                    <th>Paid</th>
+                                    <th><spring:message code="table.username"/></th>
+                                    <th><spring:message code="table.titleService"/></th>
+                                    <th><spring:message code="table.cost"/></th>
+                                    <th><spring:message code="table.payDay"/></th>
+                                    <th><spring:message code="table.paid"/></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -94,7 +94,7 @@
                                                     </c:if>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    Call
+                                                    <spring:message code="table.titleCall"/>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -103,10 +103,10 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${payment.paid}">
-                                                    <span class="label label-success">SUCCESS</span>
+                                                    <span class="label label-success"><spring:message code="table.paid.success"/></span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="label label-warning">WAIT</span>
+                                                    <span class="label label-warning"><spring:message code="table.paid.wait"/></span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>

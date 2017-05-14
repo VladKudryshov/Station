@@ -68,17 +68,17 @@
                     <!-- TABLE HOVER -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Services</h3>
+                            <h3 class="panel-title"><spring:message code="link.services.catalog"/></h3>
                         </div>
                         <div class="panel-body">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Title</th>
-                                    <th>Cost</th>
-                                    <th>Days</th>
-                                    <th>Action</th>
+                                    <th><spring:message code="table.titleService"/></th>
+                                    <th><spring:message code="table.cost"/></th>
+                                    <th><spring:message code="table.days"/></th>
+                                    <th><spring:message code="table.action"/></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -96,7 +96,7 @@
                                         <td>${service.cost}</td>
                                         <td>${service.period}</td>
                                         <td>
-                                            <button type="button" class="btn btn-default" onclick="document.location.href='/service/${service.id}/activate'"><i class="fa fa-plus-square"></i> Add </button>
+                                            <button type="button" class="btn btn-default" onclick="document.location.href='/service/${service.id}/activate'"><i class="fa fa-plus-square"></i> <spring:message code="table.button.add"/> </button>
                                         </td>
                                     </tr>
 
