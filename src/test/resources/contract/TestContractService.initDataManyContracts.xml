@@ -1,0 +1,16 @@
+<dataset>
+    <users id="1" full_name="Dave" role="ROLE_USER_ACTIVE" username="test"/>
+    <users id="2" full_name="Dave1" role="ROLE_USER_ACTIVE" username="test1"/>
+
+    <services id="1" cost="12" period="12" title_en="MTS" title_ru="МТС"/>
+
+    <contracts id="1" end_date="2017-05-13" service_id="1" user_id="1"/>
+    <payments id="1" cost="0" paid="N" contract_id="1" user_id="1"/>
+
+    <contracts id="2" end_date="2017-05-13" service_id="1" user_id="1"/>
+    <payments id="2" cost="0" paid="N" contract_id="2" user_id="1"/>
+
+    <contracts id="3" end_date="2017-05-13" service_id="1" user_id="2"/>
+    <payments id="3" cost="0" paid="N" contract_id="3" user_id="2"/>
+
+</dataset>

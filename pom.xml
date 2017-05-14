@@ -10,7 +10,6 @@
     <version>1.0.0</version>
     <name>Project</name>
 
-
     <properties>
         <jdk.version>1.8</jdk.version>
         <spring.version>4.2.0.RELEASE</spring.version>
@@ -21,6 +20,8 @@
         <logback.version>1.0.13</logback.version>
         <jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
         <hibernate.version>4.3.8.Final</hibernate.version>
+
+        <jetty9.version>9.2.13.v20150730</jetty9.version>
     </properties>
 
     <repositories>
@@ -28,18 +29,29 @@
             <id>Java.Net</id>
             <url>http://download.java.net/maven/2/</url>
         </repository>
+        <repository>
+            <id>debop-releases-bintray</id>
+            <url>http://dl.bintray.com/debop/maven</url>
+        </repository>
     </repositories>
 
     <dependencies>
 
-        <!--JSON-->
+        <!-- Redis client -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
+        <!--JSON for work with JSON object-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.7</version>
         </dependency>
 
-        <!-- Jackson JSON Mapper -->
+        <!-- Jackson JSON Mapper for view json in REST -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -49,7 +61,7 @@
         <!--javax-->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <artifactId>servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
@@ -61,12 +73,40 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <!-- Jetty -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty9.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty9.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>${jetty9.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-jmx</artifactId>
+            <version>${jetty9.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+            <version>${jetty9.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-jsp</artifactId>
+            <version>${jetty9.version}</version>
+        </dependency>
+
 
         <!--Spring security-->
         <dependency>
@@ -99,6 +139,13 @@
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.4.1.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -110,26 +157,31 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -174,20 +226,18 @@
             <version>${hibernate.version}</version>
         </dependency>
 
-        <!--Logback-->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+            <groupId>com.github.debop</groupId>
+            <artifactId>hibernate-redis</artifactId>
+            <version>1.6.1</version>
         </dependency>
 
-        <!-- jstl -->
+        <!-- jstl for JSP-page -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
-
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>
@@ -206,13 +256,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
-        </dependency>
-
-        <!--http://slf4j.org/faq.html#excludingJCL-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.12</version>
         </dependency>
 
         <!--postgreSQL connector-->
@@ -254,34 +297,10 @@
             <version>1.2.1</version>
         </dependency>
 
-        <!-- Apache Tiles -->
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-core</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-api</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-servlet</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tiles</groupId>
-            <artifactId>tiles-jsp</artifactId>
-            <version>${apachetiles.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.training</groupId>
-            <artifactId>PhoneStation</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
     </dependencies>
+
+
 
     <build>
         <finalName>project</finalName>

@@ -38,7 +38,7 @@ public class PaymentController {
     public ModelAndView paymentsByUser(ModelAndView model) {
         auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        UserEntity user = userService.getByLogin(userName);
+        UserEntity user = userService.getByUserName(userName);
         List<PaymentEntity> payments = user.getPaymentEntities();
         model.addObject("listPayments", payments);
         model.setViewName("users/payments");
@@ -50,7 +50,7 @@ public class PaymentController {
         PaymentEntity payment = paymentService.getById(id);
         paymentService.pay(payment);
 
-        return "redirect: /payment";
+        return "redirect:/payment";
     }
 
 

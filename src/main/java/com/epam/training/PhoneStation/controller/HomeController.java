@@ -31,7 +31,7 @@ public class HomeController {
         public ModelAndView main(HttpServletRequest request) {
         String login = request.getUserPrincipal().getName();
         ModelAndView model = new ModelAndView();
-        UserEntity userEntity = userService.getByLogin(login);
+        UserEntity userEntity = userService.getByUserName(login);
         List<ContractEntity> contractEntities = userEntity.getContractEntities();
         List<PaymentEntity> paymentEntities = userEntity.getPaymentEntities();
 
@@ -40,6 +40,11 @@ public class HomeController {
             ServiceEntity service =new ServiceEntity();
             service.setTitleEn("Empty");
             service.setCost(0);
+
+            PaymentEntity payment = new PaymentEntity();
+            payment.setPaid(false);
+
+            contractEntity.setPayment(payment);
             contractEntity.setService(service);
             contractEntity.setEndDate(new Date(0));
             contractEntities.add(contractEntity);
@@ -57,7 +62,7 @@ public class HomeController {
     public ModelAndView admin(HttpServletRequest request) {
         String login = request.getUserPrincipal().getName();
         ModelAndView model = new ModelAndView();
-        UserEntity userEntity = userService.getByLogin(login);
+        UserEntity userEntity = userService.getByUserName(login);
 
         model.addObject("user", userEntity);
         model.setViewName("admin");

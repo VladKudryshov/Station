@@ -1,8 +1,10 @@
 package com.epam.training.PhoneStation.controller;
 
 
-import com.epam.training.PhoneStation.entity.*;
-import com.epam.training.PhoneStation.service.api.PaymentService;
+import com.epam.training.PhoneStation.entity.ContractEntity;
+import com.epam.training.PhoneStation.entity.PaymentEntity;
+import com.epam.training.PhoneStation.entity.Role;
+import com.epam.training.PhoneStation.entity.UserEntity;
 import com.epam.training.PhoneStation.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,7 +94,7 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public ModelAndView editUser(HttpServletRequest request) {
         String login = request.getUserPrincipal().getName();
-        UserEntity userEntity = userService.getByLogin(login);
+        UserEntity userEntity = userService.getByUserName(login);
         ModelAndView model = new ModelAndView();
         userEntity.setPassword("");
         model.addObject("userEdit", userEntity);

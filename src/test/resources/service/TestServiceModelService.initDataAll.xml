@@ -1,0 +1,5 @@
+<dataset>
+    <services id="1" cost="12" period="12" title_en="MTS" title_ru="МТС"/>
+    <services id="2" cost="12" period="12" title_en="MTS1" title_ru="МТС1"/>
+    <services id="3" cost="12" period="12" title_en="MTS2" title_ru="МТС2"/>
+</dataset>

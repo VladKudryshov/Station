@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserEntity getByLogin(String login);
+    UserEntity getByUserName(String login);
 
     UserEntity getById(long id);
 

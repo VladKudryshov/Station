@@ -1,0 +1,12 @@
+<dataset>
+
+    <users id="1" full_name="Dave" role="ROLE_USER_ACTIVE" username="test"/>
+    <users id="2" full_name="Dave2" role="ROLE_USER_ACTIVE" username="test2"/>
+
+    <calls id="1"  cost="100" date_call="2017-05-14" time_call="00:00:13" user_id="1"/>
+    <calls id="2"  cost="100" date_call="2017-05-14" time_call="00:00:04" user_id="1"/>
+    <calls id="3"  cost="100" date_call="2017-05-14" time_call="00:00:02" user_id="2"/>
+    <calls id="4"  cost="100" date_call="2017-05-14" time_call="00:00:08" user_id="2"/>
+    <calls id="5"  cost="100" date_call="2017-05-14" time_call="00:00:10" user_id="1"/>
+
+</dataset>

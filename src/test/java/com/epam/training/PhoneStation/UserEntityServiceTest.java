@@ -1,73 +1,135 @@
 package com.epam.training.PhoneStation;
 
-
 import com.epam.training.PhoneStation.entity.Role;
 import com.epam.training.PhoneStation.entity.UserEntity;
 import com.epam.training.PhoneStation.service.api.UserService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = "classpath:servlet-context.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
-public class UserEntityServiceTest {
+import com.github.springtestdbunit.annotation.DatabaseOperation;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+public class UserEntityServiceTest extends AbstractTest{
     @Autowired
     private UserService userService;
 
-    private UserEntity userEntity = new UserEntity();
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initData.xml")
+    public void testGetUserById(){
 
+        UserEntity user = userService.getById(1L);
 
-    @Before
-    public void init(){
-        userEntity.setUsername("sash1111112a");
-        userEntity.setPassword("123");
-        userEntity.setRole(Role.ROLE_USER_ACTIVE);
+        Assert.assertEquals("test", user.getUsername());
+        Assert.assertEquals("Dave", user.getFullName());
+        Assert.assertEquals("ROLE_USER_ACTIVE", user.getRole());
+
     }
 
     @Test
-    public void testAddUser()
-    {
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initData.xml")
+    public void testGetUserByLogin(){
 
-        System.out.println(userEntity);
-        userEntity = userService.addUser(userEntity);
+        UserEntity user = userService.getByUserName("test");
 
-        UserEntity tmp = userService.getById(userEntity.getId());
-        Assert.assertEquals(userEntity.getId(), tmp.getId());
+        Assert.assertNotNull(user);
+        Assert.assertEquals("Dave", user.getFullName());
+        Assert.assertEquals("ROLE_USER_ACTIVE", user.getRole());
+
     }
 
     @Test
-    public void testGetUser(){
-        UserEntity userEntity1 = userService.getByLogin(userEntity.getUsername());
-        Assert.assertNotNull(userEntity1);
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initDataBlockedUser.xml")
+    public void testGetBlockedUsers(){
+
+        List<UserEntity> blockedUsers = userService.getBlockedUsers();
+
+        Assert.assertEquals(blockedUsers.size(),2);
+
     }
 
     @Test
-    public void testDeleteUser(){
-        userEntity = userService.getByLogin(userEntity.getUsername());
-        userService.delete(userEntity.getId());
-        System.out.println(userService.getByLogin(userEntity.getUsername()));
-        userEntity = userService.getByLogin(userEntity.getUsername());
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initDataUnpaidUser.xml")
+    public void testGetUnpaidUsers(){
 
-        Assert.assertNull(userEntity);
-    }
-    @Test
-    public void testUpdateUser(){
-        UserEntity userEntity1 = userService.getByLogin(userEntity.getUsername());
-        System.out.println(userEntity1);
-        userEntity1.setRole(Role.ROLE_ADMIN);
-        userService.update(userEntity1);
-        UserEntity tmp = userService.getByLogin(userEntity.getUsername());
+        List<UserEntity> blockedUsers = userService.getNotPaidUser();
 
-        Assert.assertEquals("ROLE_ADMIN", tmp.getRole());
+        Assert.assertNotEquals(blockedUsers.size(),0);
+
     }
 
     @Test
-    public void testUnpaidUser(){
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initDataBlockedUser.xml")
+    public void testGetAllUser(){
+
+        List<UserEntity> blockedUsers = userService.getAllUser();
+
+        Assert.assertEquals(blockedUsers.size(),3);
 
     }
+
+    @Test
+    @ExpectedDatabase(value = "/user/TestUserService.expectedData.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
+    public void testUserSave(){
+
+        UserEntity user = new UserEntity();
+
+        user.setFullName("Dave");
+        user.setUsername("test");
+        user.setPassword("123");
+        user.setRole(Role.ROLE_USER_BLOCKED);
+
+        userService.addUser(user);
+
+    }
+
+    @Test
+    @DatabaseSetup(type=DatabaseOperation.INSERT ,value = "/user/TestUserService.initData.xml")
+    public void testUserSameUsernameSave(){
+
+        UserEntity user = new UserEntity();
+
+        user.setFullName("Dave");
+        user.setUsername("test");
+        user.setPassword("123");
+        user.setRole(Role.ROLE_USER_ACTIVE);
+
+        user = userService.addUser(user);
+
+        Assert.assertNull(user);
+
+    }
+
+    @Test
+    @DatabaseSetup(type = DatabaseOperation.INSERT, value = "/user/TestUserService.initData.xml")
+    public void testUserUpdate(){
+
+        UserEntity user = userService.getById(1L);
+        user.setRole(Role.ROLE_USER_BLOCKED);
+        userService.update(user);
+        user = userService.getById(1L);
+
+        Assert.assertEquals(user.getRole(),"ROLE_USER_BLOCKED");
+
+    }
+
+    @Test
+    @DatabaseSetup(type=DatabaseOperation.INSERT ,value = "/user/TestUserService.initData.xml")
+    public void testUserDelete(){
+
+        userService.delete(1L);
+        UserEntity user = userService.getById(1L);
+
+        Assert.assertNull(user);
+
+    }
+
+
+
+
 
 }

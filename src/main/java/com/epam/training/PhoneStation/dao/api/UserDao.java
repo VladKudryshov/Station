@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDao extends AbstractDao<UserEntity>{
 
-    UserEntity getByLogin(String login);
+    UserEntity getByUserName(String login);
 
     List<UserEntity> getAll();
 

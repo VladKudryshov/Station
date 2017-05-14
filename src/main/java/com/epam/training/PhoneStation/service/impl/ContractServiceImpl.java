@@ -59,8 +59,8 @@ public class ContractServiceImpl implements ContractService{
 
     @Override
     @Transactional
-    public void addContract(String userName, long serviceId) {
-        UserEntity userEntity = userDao.getByLogin(userName);
+    public ContractEntity addContract(String userName, long serviceId) {
+        UserEntity userEntity = userDao.getByUserName(userName);
         ServiceEntity service = serviceEntityDao.getById(serviceId);
 
         Calendar date = new GregorianCalendar();
@@ -76,6 +76,8 @@ public class ContractServiceImpl implements ContractService{
 
         ContractEntity result = contractDao.save(contractEntity);
         paymentService.addPayment(userName,result);
+
+        return result;
     }
 
     @Override

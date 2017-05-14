@@ -49,7 +49,7 @@ public class ServiceController {
 
         auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
-        UserEntity user = userService.getByLogin(userName);
+        UserEntity user = userService.getByUserName(userName);
 
         List<ContractEntity> contractByUser = user.getContractEntities();
 
@@ -68,7 +68,7 @@ public class ServiceController {
 
     @RequestMapping(value = "/connected", method = RequestMethod.GET)
     public ModelAndView addedService(HttpServletRequest request, ModelAndView model) {
-        UserEntity user = userService.getByLogin(request.getUserPrincipal().getName());
+        UserEntity user = userService.getByUserName(request.getUserPrincipal().getName());
         List<ContractEntity> contractByUser = user.getContractEntities();
 
         model.addObject("listContract", contractByUser);
@@ -117,7 +117,7 @@ public class ServiceController {
         auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
         contractService.addContract(userName,serviceId);
-        return "redirect: /service/catalog";
+        return "redirect:/service/catalog";
     }
 
     @RequestMapping(value = "{serviceId}/deactivate", method = RequestMethod.GET)
@@ -127,7 +127,7 @@ public class ServiceController {
             contract.setUser(null);
             contractService.update(contract);
         }
-        return "redirect: /service/connected";
+        return "redirect:/service/connected";
     }
 
 

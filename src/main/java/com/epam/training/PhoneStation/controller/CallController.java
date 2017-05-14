@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,7 @@ public class CallController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView calls(HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
-        UserEntity user = userService.getByLogin(request.getUserPrincipal().getName());
+        UserEntity user = userService.getByUserName(request.getUserPrincipal().getName());
         List<CallEntity> calls = user.getCallEntities();
         model.addObject("listCalls", calls);
         model.setViewName("users/call");
@@ -47,14 +45,15 @@ public class CallController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity addCall(HttpServletRequest request, @RequestBody String timeCall) {
 
-        try{
+        try {
             String username = request.getUserPrincipal().getName();
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
             Time time = new Time(sdf.parse(timeCall).getTime());
-            CallEntity call= callService.addCall(username,time);
-            paymentService.addPayment(username,call);
+            CallEntity call = callService.addCall(username, time);
+            paymentService.addPayment(username, call);
 
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -3,13 +3,14 @@ package com.epam.training.PhoneStation.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
 @Entity
 @Table(name = "calls")
-public class CallEntity {
+public class CallEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

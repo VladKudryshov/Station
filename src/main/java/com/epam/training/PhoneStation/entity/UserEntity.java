@@ -1,13 +1,18 @@
 package com.epam.training.PhoneStation.entity;
 
-import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,15 +30,16 @@ public class UserEntity {
     @Column(name = "role")
     private String role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = javax.persistence.CascadeType.ALL,orphanRemoval = true)
     private List<ContractEntity> contractEntities;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
     private List<CallEntity> callEntities;
 
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "user",
-            targetEntity=PaymentEntity.class
+            targetEntity=PaymentEntity.class,
+            cascade = javax.persistence.CascadeType.ALL
     )
     @OrderBy("paid,id desc")
     private List<PaymentEntity> paymentEntities;

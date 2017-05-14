@@ -1,19 +1,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="appconfig-security.xml"/>
     <context:annotation-config/>
     <context:component-scan base-package="com.epam.training.PhoneStation" />
     <!-- Getting Database properties -->
     <context:property-placeholder location="classpath:application.properties" />
-    <mvc:annotation-driven />
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
-    <mvc:resources mapping="/assets/**" location="WEB-INF/assets/"/>
 
     <!-- DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -38,6 +35,19 @@
                 <!--prop key="hibernate.format_sql">true</prop-->
             </props>
         </property>
+    </bean>
+
+    <bean id="dataTypeFactory" class="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory"/>
+
+    <bean id="databaseConfig" class="com.github.springtestdbunit.bean.DatabaseConfigBean">
+        <property name="datatypeFactory" ref="dataTypeFactory"/>
+    </bean>
+
+    <bean id="dbUnitDatabaseConnection"
+          class="com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="databaseConfig" ref="databaseConfig"/>
+        <property name="schema" value="test"/>
     </bean>
 
     <!-- Transaction -->

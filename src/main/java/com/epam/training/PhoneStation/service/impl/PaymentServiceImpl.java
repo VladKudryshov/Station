@@ -48,10 +48,10 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional
-    public void addPayment(String username, Object model) {
+    public PaymentEntity addPayment(String username, Object model) {
 
         PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.setUser(userDao.getByLogin(username));
+        paymentEntity.setUser(userDao.getByUserName(username));
 
         if(model instanceof ContractEntity) {
             paymentEntity.setContract((ContractEntity) model);
@@ -63,6 +63,8 @@ public class PaymentServiceImpl implements PaymentService{
         paymentEntity = paymentDao.save(paymentEntity);
 
         LOGGER.debug("Add payment: {}",paymentEntity);
+
+        return paymentEntity;
     }
 
     @Override

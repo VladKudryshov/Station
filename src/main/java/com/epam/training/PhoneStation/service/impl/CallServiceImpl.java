@@ -35,7 +35,7 @@ public class CallServiceImpl implements CallService {
     public CallEntity addCall(String username, Time time) {
         Calendar date = new GregorianCalendar();
 
-        UserEntity user = userDao.getByLogin(username);
+        UserEntity user = userDao.getByUserName(username);
 
         CallEntity call = new CallEntity();
         call.setUser(user);

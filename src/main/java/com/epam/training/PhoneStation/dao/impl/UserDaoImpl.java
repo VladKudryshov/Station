@@ -6,6 +6,8 @@ import com.epam.training.PhoneStation.entity.UserEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.junit.Assert;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class UserDaoImpl  extends AbstractDaoImpl<UserEntity> implements UserDao {
 
     @Override
-    public UserEntity getByLogin(String login) {
+    public UserEntity getByUserName(String login) {
 
         Criteria criteria = super.getSessionFactory().getCurrentSession().createCriteria(UserEntity.class);
         criteria.add(Restrictions.eq("username", login));
@@ -25,6 +27,7 @@ public class UserDaoImpl  extends AbstractDaoImpl<UserEntity> implements UserDao
     }
 
     @Override
+    @Cacheable(value = "all", key = "user")
     public List<UserEntity> getAll() {
         Query query = getSessionFactory().getCurrentSession().createQuery("from UserEntity order by id asc");
         return query.list();

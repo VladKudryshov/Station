@@ -12,7 +12,7 @@ public interface ContractService {
 
     List<ContractEntity> getAll();
 
-    void addContract(String userName, long serviceId);
+    ContractEntity addContract(String userName, long serviceId);
 
     void update(ContractEntity contract);
 

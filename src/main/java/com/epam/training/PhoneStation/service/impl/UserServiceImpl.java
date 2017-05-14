@@ -4,6 +4,7 @@ import com.epam.training.PhoneStation.dao.api.UserDao;
 import com.epam.training.PhoneStation.entity.*;
 import com.epam.training.PhoneStation.service.api.UserService;
 
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class UserServiceImpl  implements UserService{
 
     @Override
     @Transactional
-    public UserEntity getByLogin(String login) {
-        return userDao.getByLogin(login);
+    public UserEntity getByUserName(String login) {
+        return userDao.getByUserName(login);
     }
 
     @Override
@@ -109,10 +110,20 @@ public class UserServiceImpl  implements UserService{
     @Override
     @Transactional
     public UserEntity addUser(UserEntity userEntity) {
-        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        LOGGER.debug("Add user {}", userEntity);
 
-        return userDao.save(userEntity);
+        if (userDao.getByUserName(userEntity.getUsername())==null){
+            userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
+            userEntity = userDao.save(userEntity);
+
+            LOGGER.debug("Add user {}", userEntity);
+
+            return userEntity;
+        }
+
+        LOGGER.debug("User already exists {}", userEntity);
+
+        return null;
+
     }
 
     @Override

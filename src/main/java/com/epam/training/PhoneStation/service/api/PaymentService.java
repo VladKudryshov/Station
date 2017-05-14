@@ -13,7 +13,7 @@ public interface PaymentService {
 
     List<PaymentEntity> getAllByUser(long userId);
 
-    void addPayment(String username, Object model);
+    PaymentEntity addPayment(String username, Object model);
 
     void pay(PaymentEntity paymentEntity);
 

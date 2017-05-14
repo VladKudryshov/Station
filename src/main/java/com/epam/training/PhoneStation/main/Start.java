@@ -12,14 +12,20 @@ import java.util.Arrays;
 public class Start {
     public static void main(String[] args) {
 
-        for (String str : fullname()) {
-            System.out.println(str);
-        }
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("servlet-context.xml");
+
+        UserService userDao = context.getBean(UserService.class);
+        ServiceModelService serviceDao = context.getBean(ServiceModelService.class);
+        CallService service = context.getBean(CallService.class);
+        ContractService contractService = context.getBean(ContractService.class);
+        PaymentService paymentService = context.getBean(PaymentService.class);
+
+        UserEntity user = new UserEntity();
+        user.setUsername("vlad1");
+        user.setPassword("123");
+        user.setRole(Role.ROLE_ADMIN);
+        user = userDao.addUser(user);
 
     }
 
-    private static String[] fullname(){
-
-        return new String[]{"имя" , "фамилия", "отчество"};
-    }
 }
