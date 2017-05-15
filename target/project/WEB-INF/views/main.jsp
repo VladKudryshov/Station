@@ -39,7 +39,7 @@
                 <ul class="nav navbar-nav navbar-right">
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> Hello, ${user.fullName}!</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span>${user.username}!</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
                             <li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
@@ -67,13 +67,13 @@
                             <!-- PROFILE DETAIL -->
                             <div class="profile-detail">
                                 <div class="profile-info">
-                                    <h4 class="heading">Basic Info</h4>
+                                    <h4 class="heading"><spring:message code="basic.title"/></h4>
                                     <ul class="list-unstyled list-justify">
-                                        <li>Phone <span>${user.username}</span></li>
-                                        <li>Full name <span>${user.fullName}</span></li>
-                                        <li>Role <span>${user.role}</span></li>
+                                        <li><spring:message code="basic.login"/><span>${user.username}</span></li>
+                                        <li><spring:message code="basic.fullname"/> <span>${user.fullName}</span></li>
+                                        <li><spring:message code="basic.role"/> <span>${user.role}</span></li>
                                     </ul>
-                                    <div class="text-center"><a href="/user/edit" class="btn btn-primary">Edit Profile</a></div>
+                                    <div class="text-center"><a href="/user/edit" class="btn btn-primary"><spring:message code="basic.edit"/></a></div>
 
                                 </div>
                             </div>
@@ -85,8 +85,8 @@
                             <!-- TABBED CONTENT -->
                             <div class="custom-tabs-line tabs-line-bottom left-aligned">
                                 <ul class="nav" role="tablist">
-                                    <li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">Payments</a></li>
-                                    <li><a href="#tab-bottom-left2" role="tab" data-toggle="tab">Service </a></li>
+                                    <li class="active"><a href="#tab-bottom-left1" role="tab" data-toggle="tab"><spring:message code="basic.titlePayments"/></a></li>
+                                    <li><a href="#tab-bottom-left2" role="tab" data-toggle="tab"><spring:message code="basic.titleServices"/> </a></li>
                                 </ul>
                             </div>
                             <div class="tab-content">
@@ -96,7 +96,7 @@
                                             <li>
                                                 <i class="fa fa-plus activity-icon"></i>
                                                 <p>
-                                                    You never paid
+                                                    <spring:message code="basic.notPayments.Title"/>
                                                     <span class="timestamp">1970-01-01</span>
                                                 </p>
                                             </li>
@@ -104,23 +104,23 @@
                                         <c:forEach var="paymentEntities" items="${listPayments}" end="2">
                                             <li>
                                                 <i class="fa fa-plus activity-icon"></i>
-                                                <p> Paid service ${paymentEntities.contract.service.titleEn} (<b>Status:</b> ${paymentEntities.paid})
+                                                <p> <spring:message code="basic.payments.title"/> ${paymentEntities.contract.service.titleEn} (<b><spring:message code="basic.service.status"/>:</b> ${paymentEntities.paid})
                                                     <span class="timestamp">${paymentEntities.paymentDate}</span>
                                                 </p>
                                             </li>
                                         </c:forEach>
                                     </ul>
-                                    <div class="margin-top-30 text-center"><a href="/payment" class="btn btn-default">See all paymentEntities</a></div>
+                                    <div class="margin-top-30 text-center"><a href="/payment" class="btn btn-default"><spring:message code="basic.button.SeeAllPayments"/></a></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-bottom-left2">
                                     <div class="table-responsive">
                                         <table class="table project-table">
                                             <thead>
                                             <tr>
-                                                <th>Name service</th>
-                                                <th>Cost</th>
-                                                <th>End date</th>
-                                                <th>Status</th>
+                                                <th><spring:message code="table.titleService"/></th>
+                                                <th><spring:message code="table.cost"/></th>
+                                                <th><spring:message code="basic.service.endDate"/></th>
+                                                <th><spring:message code="basic.service.status"/></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -137,10 +137,10 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${contractEntity.payment.paid}">
-                                                                <span class="label label-success">SUCCESS</span>
+                                                                <span class="label label-success"><spring:message code="table.paid.success"/></span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <span class="label label-warning">WAIT</span>
+                                                                <span class="label label-warning"><spring:message code="table.paid.wait"/></span>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>

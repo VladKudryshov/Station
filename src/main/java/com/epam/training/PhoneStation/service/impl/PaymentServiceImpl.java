@@ -98,7 +98,7 @@ public class PaymentServiceImpl implements PaymentService{
         paymentEntity.setCost(cost);
         paymentEntity.setPaid(true);
 
-        LOGGER.info("The user {} paid", paymentEntity.getUser().getFullName());
+        LOGGER.info("The user {} paid", paymentEntity.getUser().getUsername());
         paymentDao.update(paymentEntity);
     }
 

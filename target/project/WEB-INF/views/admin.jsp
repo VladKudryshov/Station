@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav navbar-right">
 
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> ${user.fullName}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span> ${user.username}</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
                             <li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
@@ -71,7 +71,7 @@
                                         <li><spring:message code="basic.role"/> <span>${user.role}</span></li>
                                     </ul>
                                 </div>
-                                <div class="text-center"><a href="user/${user.id}/edit" class="btn btn-primary"><spring:message code="basic.edit"/></a></div>
+                                <div class="text-center"><a href="user/edit" class="btn btn-primary"><spring:message code="basic.edit"/></a></div>
                             </div>
                             <!-- END PROFILE DETAIL -->
                         </div>
